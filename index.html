@@ -18,7 +18,7 @@
         <p id="loader-text">جاري المزامنة...</p>
     </div>
 
-    <!-- ==================== 1. شاشة تسجيل الدخول (مطابقة للصورة) ==================== -->
+    <!-- ==================== 1. شاشة تسجيل الدخول ==================== -->
     <section id="auth-screen" class="auth-wrapper">
         <div class="login-card">
             <h1 class="brand-title">البكالوريا مع عبدالقادر</h1>
@@ -33,7 +33,10 @@
 
                 <div class="input-group">
                     <label dir="ltr">Password</label>
-                    <input type="password" id="login-password" placeholder="ضع كلمة المرور" required>
+                    <div class="password-wrapper">
+                        <input type="password" id="login-password" placeholder="ضع كلمة المرور" required>
+                        <i class="fa-solid fa-eye toggle-password" id="toggle-login-pass"></i>
+                    </div>
                 </div>
 
                 <div class="form-options">
@@ -66,7 +69,10 @@
 
                 <div class="input-group">
                     <label dir="ltr">Password</label>
-                    <input type="password" id="reg-password" placeholder="أنشئ كلمة مرور قوية" required>
+                    <div class="password-wrapper">
+                        <input type="password" id="reg-password" placeholder="أنشئ كلمة مرور قوية" required>
+                        <i class="fa-solid fa-eye toggle-password" id="toggle-reg-pass"></i>
+                    </div>
                 </div>
 
                 <button type="submit" class="btn-primary-gold">تأكيد إنشاء الحساب</button>
@@ -83,7 +89,10 @@
         <div class="modal-box">
             <h3><i class="fa-solid fa-shield-halved"></i> تحقق المطور</h3>
             <p>تم التعرف على بريد صاحب الموقع. أدخل كلمة المرور السرية للدخول بوضع المطور:</p>
-            <input type="password" id="dev-secret-input" placeholder="كلمة سر المطور" dir="ltr">
+            <div class="password-wrapper" style="margin: 14px 0;">
+                <input type="password" id="dev-secret-input" placeholder="كلمة سر المطور" dir="ltr" style="margin:0;">
+                <i class="fa-solid fa-eye toggle-password" id="toggle-dev-pass"></i>
+            </div>
             <div class="modal-actions">
                 <button id="verify-dev-btn" class="btn-primary-gold">دخول كمطور</button>
                 <button id="cancel-dev-btn" class="btn-outline-gold">إلغاء</button>
@@ -175,7 +184,10 @@
             <section id="tab-quizzes" class="tab-view hidden">
                 <div class="section-header">
                     <h2 id="quizzes-tab-heading">اختباراتي</h2>
-                    <button id="create-quiz-btn" class="btn-small-gold hidden">+ إنشاء اختبار لطالب</button>
+                    <div style="display:flex; gap:8px; align-items:center;">
+                        <button id="request-quiz-btn" class="btn-small-gold hidden"><i class="fa-solid fa-plus"></i> طلب اختبار</button>
+                        <button id="create-quiz-btn" class="btn-small-gold hidden">+ إنشاء اختبار لطالب</button>
+                    </div>
                 </div>
 
                 <!-- قائمة الاختبارات -->
@@ -236,9 +248,15 @@
                     <!-- تغيير كلمة المرور -->
                     <div class="setting-item">
                         <label>تغيير كلمة المرور</label>
-                        <input type="password" id="old-pass-input" placeholder="كلمة المرور السابقة" style="margin-bottom: 8px;">
+                        <div class="password-wrapper" style="margin-bottom: 8px;">
+                            <input type="password" id="old-pass-input" placeholder="كلمة المرور السابقة" style="margin:0;">
+                            <i class="fa-solid fa-eye toggle-password" id="toggle-old-pass"></i>
+                        </div>
                         <div class="inline-edit">
-                            <input type="password" id="new-pass-input" placeholder="كلمة المرور الجديدة">
+                            <div class="password-wrapper" style="flex:1;">
+                                <input type="password" id="new-pass-input" placeholder="كلمة المرور الجديدة" style="margin:0;">
+                                <i class="fa-solid fa-eye toggle-password" id="toggle-new-pass"></i>
+                            </div>
                             <button id="save-pass-btn" class="btn-small-gold">تغيير</button>
                         </div>
                     </div>
@@ -279,6 +297,33 @@
     </div>
 
     <!-- ==================== النوافذ المنبثقة (Modals) ==================== -->
+
+    <!-- نافذة طلب اختبار (للطالب) -->
+    <div id="request-quiz-modal" class="modal-overlay hidden">
+        <div class="modal-box">
+            <h3><i class="fa-solid fa-paper-plane"></i> طلب اختبار جديد</h3>
+            <div class="input-group">
+                <label>المادة (المطلوب إنشاء اختبار لها)</label>
+                <input type="text" id="req-subject" placeholder="مثال: علم الأحياء - العصبية">
+            </div>
+            <div class="input-group">
+                <label>اسم البحث (من المادة المطلوبة)</label>
+                <input type="text" id="req-topic" placeholder="مثال: المستقبلات الحسية">
+            </div>
+            <div class="input-group">
+                <label>اسم مقدم الطلب (اسم الطالب)</label>
+                <input type="text" id="req-student-name">
+            </div>
+            <div class="input-group">
+                <label>إضافة ملاحظة</label>
+                <input type="text" id="req-notes" placeholder="أي تفاصيل إضافية...">
+            </div>
+            <div class="modal-actions">
+                <button id="send-quiz-request-whatsapp" class="btn-primary-gold">إرسال إلى واتساب المطور</button>
+                <button id="cancel-quiz-request" class="btn-outline-gold">إلغاء</button>
+            </div>
+        </div>
+    </div>
 
     <!-- نافذة عرض النتيجة -->
     <div id="result-modal" class="modal-overlay hidden">
@@ -334,7 +379,10 @@
             </div>
             <div class="input-group">
                 <label>كلمة المرور</label>
-                <input type="text" id="dev-u-password" dir="ltr">
+                <div class="password-wrapper">
+                    <input type="text" id="dev-u-password" dir="ltr" style="margin:0;">
+                    <i class="fa-solid fa-eye toggle-password" id="toggle-dev-u-pass"></i>
+                </div>
             </div>
             <div class="modal-actions">
                 <button id="dev-save-user-btn" class="btn-primary-gold">حفظ</button>
