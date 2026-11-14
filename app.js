@@ -1,6 +1,6 @@
 // ==================== إعدادات JSONBin.io والمطور ====================
-const JSONBIN_BIN_ID = "ضع_معرف_الخزنة_هنا_BIN_ID"; 
-const JSONBIN_API_KEY = "ضع_مفتاح_التوكن_هنا_X_MASTER_KEY";
+const JSONBIN_BIN_ID = "6af7e806ffd5d16053c02657"; 
+const JSONBIN_API_KEY = "$2a$10$4E5tRjBAaY8BZGvom1qx7OffYbN3aI5VxFZvBdjqIw5gzEgcjShRy";
 const JSONBIN_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`;
 
 const DEV_EMAIL = "abdalqadr3518@gmail.com";
@@ -15,6 +15,14 @@ const STUDY_PDFS = [
     {
         file: "pdfs/Ending_exercises.pdf",
         title: "رياضيات: تمارين على النهايات"
+    },
+    {
+        file: "pdfs/Nuclear_Summary_Pxl.pdf",
+        title: "كيمياء: ملخص نووية 🧪"
+    },
+    {
+        file: "pdfs/Gases_Summary_Pxl.pdf",
+        title: "كيمياء: ملخص غازات 💨"
     }
 ];
 
@@ -371,7 +379,7 @@ document.getElementById("send-quiz-request-whatsapp").onclick = () => {
         return;
     }
 
-    const message = `مرحباً مطور عبدالقادر، أطلب إنشاء اختبار جديد:%0A` +
+    const message = `مرحباً أستاذ عبدالقادر ،أتقدم بطلب اختبار جديد لـِ إنشاء اختبار جديد:%0A` +
         `- المادة: ${subject}%0A` +
         `- اسم البحث: ${topic}%0A` +
         `- اسم الطالب: ${studentName}%0A` +
