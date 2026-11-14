@@ -1,6 +1,6 @@
 // ==================== إعدادات JSONBin.io والمطور ====================
-const JSONBIN_BIN_ID = "6af7e806ffd5d16053c02657"; 
-const JSONBIN_API_KEY = "$2a$10$4E5tRjBAaY8BZGvom1qx7OffYbN3aI5VxFZvBdjqIw5gzEgcjShRy";
+const JSONBIN_BIN_ID = "6af7e806ffd5d16053c02657"; // تأكد من صحة المعرف الخاص بك
+const JSONBIN_API_KEY = "$2a$10$4E5tRjBAaY8BZGvom1qx7OffYbN3aI5VxFZvBdjqIw5gzEgcjShRy"; // تأكد من صحة التوكن الخاص بك
 const JSONBIN_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`;
 
 const DEV_EMAIL = "abdalqadr3518@gmail.com";
@@ -1204,6 +1204,4 @@ window.showQuizResult = (id) => {
     const box = document.getElementById("result-details");
     if (!box) return;
     if (!q || !q.completed || !q.result) {
-        box.innerHTML = "<p style='text-align:center; color:#fbbf24;'>لم يتم حل هذا الاختبار بعد!</p>";
-    } else {
-        const r = q.result
+        box.innerHTML = "<p style='text-align:center; color:#fbbf24;'>لم يتم حل هذ
