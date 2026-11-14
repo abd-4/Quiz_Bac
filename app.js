@@ -5,6 +5,7 @@ const JSONBIN_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`;
 
 const DEV_EMAIL = "abdalqadr3518@gmail.com";
 const DEV_SECRET = "ABDALQADR_DEVELOPER";
+const DEV_WHATSAPP = "963939084991";
 
 // ملفات الـ PDF الموجودة في مجلد pdfs داخل GitHub
 const STUDY_PDFS = [
@@ -74,12 +75,41 @@ async function saveDatabase() {
     }
 }
 
+// ==================== نظام إظهار وإخفاء كلمة المرور (زر العين) ====================
+function setupPasswordToggles() {
+    const toggles = [
+        { icon: "toggle-login-pass", input: "login-password" },
+        { icon: "toggle-reg-pass", input: "reg-password" },
+        { icon: "toggle-dev-pass", input: "dev-secret-input" },
+        { icon: "toggle-old-pass", input: "old-pass-input" },
+        { icon: "toggle-new-pass", input: "new-pass-input" },
+        { icon: "toggle-dev-u-pass", input: "dev-u-password" }
+    ];
+
+    toggles.forEach(item => {
+        const iconEl = document.getElementById(item.icon);
+        const inputEl = document.getElementById(item.input);
+        if (iconEl && inputEl) {
+            iconEl.onclick = () => {
+                if (inputEl.type === "password") {
+                    inputEl.type = "text";
+                    iconEl.className = "fa-solid fa-eye-slash toggle-password";
+                } else {
+                    inputEl.type = "password";
+                    iconEl.className = "fa-solid fa-eye toggle-password";
+                }
+            };
+        }
+    });
+}
+
 // ==================== التهيئة عند فتح الموقع ====================
 window.addEventListener("DOMContentLoaded", async () => {
     renderPdfs();
+    setupPasswordToggles();
     await fetchDatabase();
 
-    // التحقق من خاصية "تذكرني" (Session / LocalStorage)
+    // التحقق من خاصية "تذكرني"
     const savedSession = JSON.parse(localStorage.getItem("bac_abdalqadr_session"));
     if (savedSession) {
         if (savedSession.isDev) {
@@ -170,7 +200,6 @@ document.getElementById("login-form").onsubmit = async (e) => {
     const password = document.getElementById("login-password").value;
     const remember = document.getElementById("remember-me").checked;
 
-    // التحقق إذا كان البريد هو بريد المطور
     if (identifier === DEV_EMAIL) {
         document.getElementById("dev-modal").classList.remove("hidden");
         return;
@@ -236,6 +265,7 @@ function enterApp() {
         navQuizLabel.textContent = "اختبارات الطلاب";
         quizHeading.textContent = "اختبارات الطلاب";
         document.getElementById("create-quiz-btn").classList.remove("hidden");
+        document.getElementById("request-quiz-btn").classList.add("hidden");
         document.getElementById("dev-users-panel").classList.remove("hidden");
         renderDevUsersList();
     } else {
@@ -244,6 +274,7 @@ function enterApp() {
         navQuizLabel.textContent = "اختباراتي";
         quizHeading.textContent = "اختباراتي";
         document.getElementById("create-quiz-btn").classList.add("hidden");
+        document.getElementById("request-quiz-btn").classList.remove("hidden");
         document.getElementById("dev-users-panel").classList.add("hidden");
     }
 
@@ -266,12 +297,9 @@ document.querySelectorAll(".nav-item").forEach(btn => {
 
 // ==================== الإحصائيات ونظام التقييم ====================
 function updateStatsAndRating() {
-    // 1. عدد الطلاب
     document.getElementById("stat-users").textContent = db.users.length;
-    // 2. عدد الاختبارات المنشأة
     document.getElementById("stat-quizzes").textContent = db.quizzes.length;
 
-    // 3. حساب أفضل طالب (أكبر عدد اختبارات منجزة بأعلى نسبة نجاح)
     let bestStudentName = "لا يوجد بعد";
     let maxCompleted = 0;
     let highestAvg = 0;
@@ -289,7 +317,6 @@ function updateStatsAndRating() {
     });
     document.getElementById("stat-top-student").textContent = bestStudentName;
 
-    // 4. متوسط تقييم الموقع
     if (db.ratings.length > 0) {
         const sum = db.ratings.reduce((a, b) => a + b, 0);
         const avgRating = (sum / db.ratings.length).toFixed(1);
@@ -298,7 +325,6 @@ function updateStatsAndRating() {
         document.getElementById("stat-rating").textContent = "5.0 / 5";
     }
 
-    // التحقق هل قيّم المستخدم مسبقاً
     if (!isDeveloper && currentUser.hasRated) {
         lockRatingUI();
     }
@@ -334,6 +360,40 @@ document.getElementById("submit-rating-btn").onclick = async () => {
     await saveDatabase();
     lockRatingUI();
     updateStatsAndRating();
+};
+
+// ==================== طلب اختبار عبر واتساب (للطالب) ====================
+document.getElementById("request-quiz-btn").onclick = () => {
+    document.getElementById("req-subject").value = "";
+    document.getElementById("req-topic").value = "";
+    document.getElementById("req-student-name").value = currentUser ? currentUser.fullName : "";
+    document.getElementById("req-notes").value = "";
+    document.getElementById("request-quiz-modal").classList.remove("hidden");
+};
+
+document.getElementById("cancel-quiz-request").onclick = () => {
+    document.getElementById("request-quiz-modal").classList.add("hidden");
+};
+
+document.getElementById("send-quiz-request-whatsapp").onclick = () => {
+    const subject = document.getElementById("req-subject").value.trim();
+    const topic = document.getElementById("req-topic").value.trim();
+    const studentName = document.getElementById("req-student-name").value.trim();
+    const notes = document.getElementById("req-notes").value.trim();
+
+    if (!subject || !topic || !studentName) {
+        alert("يرجى تعبئة الحقول الأساسية (المادة، اسم البحث، اسم الطالب)!");
+        return;
+    }
+
+    const message = `مرحباً مطور عبدالقادر، أطلب إنشاء اختبار جديد:%0A` +
+        `- المادة: ${subject}%0A` +
+        `- اسم البحث: ${topic}%0A` +
+        `- اسم الطالب: ${studentName}%0A` +
+        `- الملاحظات: ${notes || "لا توجد"}`;
+
+    window.open(`https://wa.me/+${DEV_WHATSAPP}?text=${message}`, "_blank");
+    document.getElementById("request-quiz-modal").classList.add("hidden");
 };
 
 // ==================== صلاحيات المطور لإدارة الأعضاء ====================
@@ -515,7 +575,6 @@ window.updateMcqOptions = (selectEl, existingData = null) => {
             </div>
         `;
     }
-    // توحيد اسم الراديو داخل نفس السؤال
     const groupName = "grp_" + Date.now() + "_" + Math.random();
     box.querySelectorAll(".opt-radio").forEach(r => r.name = groupName);
 };
@@ -775,7 +834,6 @@ document.getElementById("save-username-btn").onclick = async () => {
         return;
     }
 
-    // تحديث اليوزر في الاختبارات المرتبطة به أيضاً
     db.quizzes.forEach(q => {
         if (q.targetUsername.toLowerCase() === currentUser.username.toLowerCase()) {
             q.targetUsername = newUsername;
