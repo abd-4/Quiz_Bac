@@ -116,7 +116,7 @@ body {
     transition: border-color 0.25s;
 }
 
-.input-group input:focus {
+.input-group input:focus, .input-group select:focus {
     border-color: var(--gold-light);
 }
 
@@ -377,12 +377,36 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 16px;
+    margin-bottom: 14px;
 }
 
 .section-header h2 {
     font-size: 1.25rem;
     color: var(--gold-light);
+}
+
+.filter-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 14px;
+}
+
+.filter-btn {
+    flex: 1;
+    padding: 7px 10px;
+    background: var(--card-bg);
+    border: 1px solid rgba(154, 99, 38, 0.4);
+    color: var(--text-muted);
+    border-radius: 10px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.filter-btn.active {
+    background: var(--gold-gradient);
+    color: #fff;
+    border-color: transparent;
 }
 
 .btn-small-gold {
@@ -394,7 +418,21 @@ body {
     font-weight: 700;
     font-size: 0.85rem;
     cursor: pointer;
-    display: flex;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.btn-share-quiz {
+    background: rgba(16, 185, 129, 0.15);
+    border: 1px solid #10b981;
+    color: #34d399;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
     align-items: center;
     gap: 5px;
 }
@@ -418,7 +456,7 @@ body {
 .item-card-top {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
     gap: 10px;
 }
 
@@ -432,6 +470,7 @@ body {
     display: flex;
     gap: 8px;
     flex-wrap: wrap;
+    align-items: center;
 }
 
 .btn-result {
@@ -440,7 +479,7 @@ body {
     color: #38bdf8;
     padding: 6px 14px;
     border-radius: 8px;
-    font-size: 0.85rem;
+    font-size: 0.82rem;
     font-weight: 700;
     cursor: pointer;
 }
@@ -470,16 +509,18 @@ body {
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     padding-bottom: 10px;
     margin-bottom: 15px;
+    gap: 8px;
 }
 
 .timer-badge {
     background: rgba(239, 68, 68, 0.2);
     color: #f87171;
     border: 1px solid #ef4444;
-    padding: 4px 10px;
+    padding: 5px 12px;
     border-radius: 20px;
-    font-size: 0.85rem;
-    font-weight: 700;
+    font-size: 0.9rem;
+    font-weight: 800;
+    white-space: nowrap;
 }
 
 .q-block {
@@ -627,6 +668,7 @@ body {
     color: var(--danger);
     font-weight: 700;
     cursor: pointer;
+    font-size: 0.85rem;
 }
 
 .bottom-nav {
@@ -679,7 +721,7 @@ body {
     border-radius: 20px;
     padding: 24px;
     width: 100%;
-    max-width: 420px;
+    max-width: 440px;
     text-align: center;
 }
 
