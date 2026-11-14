@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>البكالوريا مع عبدالقادر</title>
-    <!-- ربط ملف الـ Manifest لتفعيل تحويل الموقع لتطبيق PWA -->
-    <link rel="manifest" href="/manifest.json">
+    <!-- ربط ملف الـ Manifest مع مسار المستودع الصحيح -->
+    <link rel="manifest" href="/Quiz_Bac/manifest.json">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -332,7 +332,7 @@
         <div class="modal-box">
             <h3><i class="fa-solid fa-square-poll-vertical"></i> نتيجة الاختبار</h3>
             <div id="result-details" class="result-grid"></div>
-            <button id="close-result-modal" class="btn-primary-gold">إغلاق</button>
+            <button id="close-result-modal" class="btn-primary-gold">إلغاء</button>
         </div>
     </div>
 
@@ -394,11 +394,11 @@
     </div>
 
     <script src="app.js"></script>
-    <!-- كود تفعيل الـ Service Worker -->
+    <!-- كود تفعيل الـ Service Worker مع المسار الصحيح -->
     <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-          navigator.serviceWorker.register('/sw.js');
+          navigator.serviceWorker.register('/Quiz_Bac/sw.js');
         });
       }
     </script>
