@@ -16,6 +16,14 @@ const STUDY_PDFS = [
     {
         file: "pdfs/Ending_exercises.pdf",
         title: "رياضيات: تمارين على النهايات"
+    },
+    {
+        file: "pdfs/Nuclear_Summary_Pxl.pdf",
+        title: "كيمياء: ملخص نووية 🧪"
+    },
+    {
+        file: "pdfs/Gases_Summary_Pxl.pdf",
+        title: "كيمياء: ملخص غازات 💨"
     }
 ];
 
