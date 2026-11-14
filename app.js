@@ -1,13 +1,12 @@
 // ==================== إعدادات JSONBin.io والمطور ====================
-const JSONBIN_BIN_ID = "6af7e806ffd5d16053c02657"; 
-const JSONBIN_API_KEY = "$2a$10$4E5tRjBAaY8BZGvom1qx7OffYbN3aI5VxFZvBdjqIw5gzEgcjShRy";
+const JSONBIN_BIN_ID = "ضع_معرف_الخزنة_هنا_BIN_ID"; 
+const JSONBIN_API_KEY = "ضع_مفتاح_التوكن_هنا_X_MASTER_KEY";
 const JSONBIN_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`;
 
 const DEV_EMAIL = "abdalqadr3518@gmail.com";
 const DEV_SECRET = "ABDALQADR_DEVELOPER";
 const DEV_WHATSAPP = "963939084991";
 
-// ملفات الـ PDF الموجودة في مجلد pdfs داخل GitHub
 const STUDY_PDFS = [
     {
         file: "pdfs/One_hundred_questions_on_neurosis.pdf",
@@ -16,26 +15,17 @@ const STUDY_PDFS = [
     {
         file: "pdfs/Ending_exercises.pdf",
         title: "رياضيات: تمارين على النهايات"
-    },
-    {
-        file: "pdfs/Nuclear_Summary_Pxl.pdf",
-        title: "كيمياء: ملخص نووية 🧪"
-    },
-    {
-        file: "pdfs/Gases_Summary_Pxl.pdf",
-        title: "كيمياء: ملخص غازات 💨"
     }
 ];
 
-// الحالة العامة للتطبيق
 let db = { users: [], quizzes: [], ratings: [] };
 let currentUser = null;
 let isDeveloper = false;
 let selectedStars = 0;
 let editingQuizId = null;
 let editingUserIndex = null;
+let quizTimerInterval = null;
 
-// ==================== أدوات الاتصال بقاعدة البيانات ====================
 function showLoader(text = "جاري التحميل...") {
     document.getElementById("loader-text").textContent = text;
     document.getElementById("loader").classList.remove("hidden");
@@ -83,7 +73,6 @@ async function saveDatabase() {
     }
 }
 
-// ==================== نظام إظهار وإخفاء كلمة المرور (زر العين) ====================
 function setupPasswordToggles() {
     const toggles = [
         { icon: "toggle-login-pass", input: "login-password" },
@@ -111,13 +100,11 @@ function setupPasswordToggles() {
     });
 }
 
-// ==================== التهيئة عند فتح الموقع ====================
 window.addEventListener("DOMContentLoaded", async () => {
     renderPdfs();
     setupPasswordToggles();
     await fetchDatabase();
 
-    // التحقق من خاصية "تذكرني"
     const savedSession = JSON.parse(localStorage.getItem("bac_abdalqadr_session"));
     if (savedSession) {
         if (savedSession.isDev) {
@@ -140,7 +127,6 @@ window.addEventListener("DOMContentLoaded", async () => {
     }
 });
 
-// ==================== نظام تسجيل الدخول وإنشاء الحساب ====================
 document.getElementById("show-register-btn").onclick = () => {
     document.getElementById("login-form").classList.add("hidden");
     document.getElementById("register-form").classList.remove("hidden");
@@ -151,7 +137,6 @@ document.getElementById("show-login-btn").onclick = () => {
     document.getElementById("login-form").classList.remove("hidden");
 };
 
-// إنشاء حساب جديد وتوليد يوزرنيم
 document.getElementById("register-form").onsubmit = async (e) => {
     e.preventDefault();
     const fullName = document.getElementById("reg-name").value.trim();
@@ -169,7 +154,6 @@ document.getElementById("register-form").onsubmit = async (e) => {
         return;
     }
 
-    // توليد يوزرنيم فريد للطالب
     const baseName = email.split("@")[0].replace(/[^a-zA-Z0-9]/g, "");
     const randomNum = Math.floor(100 + Math.random() * 900);
     const generatedUsername = `${baseName || "student"}_${randomNum}`;
@@ -191,7 +175,6 @@ document.getElementById("register-form").onsubmit = async (e) => {
     currentUser = newUser;
     isDeveloper = false;
 
-    // عرض اليوزرنيم للطالب ليحفظه
     document.getElementById("generated-username-display").textContent = generatedUsername;
     document.getElementById("username-alert-modal").classList.remove("hidden");
 };
@@ -201,7 +184,6 @@ document.getElementById("close-username-modal").onclick = () => {
     enterApp();
 };
 
-// تسجيل الدخول
 document.getElementById("login-form").onsubmit = async (e) => {
     e.preventDefault();
     const identifier = document.getElementById("login-identifier").value.trim().toLowerCase();
@@ -232,7 +214,6 @@ document.getElementById("login-form").onsubmit = async (e) => {
     enterApp();
 };
 
-// التحقق من كلمة سر المطور
 document.getElementById("verify-dev-btn").onclick = async () => {
     const secret = document.getElementById("dev-secret-input").value.trim();
     if (secret === DEV_SECRET) {
@@ -258,7 +239,6 @@ document.getElementById("cancel-dev-btn").onclick = () => {
     document.getElementById("dev-modal").classList.add("hidden");
 };
 
-// ==================== الدخول للتطبيق وتحديث الواجهات ====================
 function enterApp() {
     document.getElementById("auth-screen").classList.add("hidden");
     document.getElementById("app-container").classList.remove("hidden");
@@ -271,7 +251,7 @@ function enterApp() {
         badge.textContent = "وضع المطور";
         badge.className = "badge-dev";
         navQuizLabel.textContent = "اختبارات الطلاب";
-        quizHeading.textContent = "اختبارات الطلاب";
+        quizHeading.textContent = "إدارة واختبارات الطلاب";
         document.getElementById("create-quiz-btn").classList.remove("hidden");
         document.getElementById("request-quiz-btn").classList.add("hidden");
         document.getElementById("dev-users-panel").classList.remove("hidden");
@@ -291,7 +271,6 @@ function enterApp() {
     loadProfileUI();
 }
 
-// التنقل بين التبويبات السفلية
 document.querySelectorAll(".nav-item").forEach(btn => {
     btn.onclick = () => {
         document.querySelectorAll(".nav-item").forEach(b => b.classList.remove("active"));
@@ -303,7 +282,6 @@ document.querySelectorAll(".nav-item").forEach(btn => {
     };
 });
 
-// ==================== الإحصائيات ونظام التقييم ====================
 function updateStatsAndRating() {
     document.getElementById("stat-users").textContent = db.users.length;
     document.getElementById("stat-quizzes").textContent = db.quizzes.length;
@@ -370,7 +348,6 @@ document.getElementById("submit-rating-btn").onclick = async () => {
     updateStatsAndRating();
 };
 
-// ==================== طلب اختبار عبر واتساب (للطالب) ====================
 document.getElementById("request-quiz-btn").onclick = () => {
     document.getElementById("req-subject").value = "";
     document.getElementById("req-topic").value = "";
@@ -404,7 +381,6 @@ document.getElementById("send-quiz-request-whatsapp").onclick = () => {
     document.getElementById("request-quiz-modal").classList.add("hidden");
 };
 
-// ==================== صلاحيات المطور لإدارة الأعضاء ====================
 function renderDevUsersList() {
     const container = document.getElementById("dev-users-list");
     if (db.users.length === 0) {
@@ -486,12 +462,11 @@ window.devDeleteUser = async (idx) => {
     }
 };
 
-// ==================== نظام الاختبارات (للمطور والطالب) ====================
 function renderQuizzes() {
     const container = document.getElementById("quizzes-list");
     const list = isDeveloper
         ? db.quizzes
-        : db.quizzes.filter(q => q.targetUsername.toLowerCase() === currentUser.username.toLowerCase());
+        : db.quizzes.filter(q => q.targetUsername.toLowerCase() === currentUser.username.toLowerCase() || q.targetUsername === "ALL");
 
     if (list.length === 0) {
         container.innerHTML = "<p style='color:#94a3b8; text-align:center;'>لا توجد اختبارات متاحة حالياً.</p>";
@@ -503,7 +478,7 @@ function renderQuizzes() {
             <div class="item-card-top">
                 <div>
                     <div class="item-card-title">${q.title}</div>
-                    ${isDeveloper ? `<small style="color:#fbbf24;">مُرسل إلى: @${q.targetUsername}</small>` : ""}
+                    ${isDeveloper ? `<small style="color:#fbbf24;">المستهدف: ${q.targetUsername === 'ALL' ? '🌟 كافة الطلاب (جماعي)' : '@' + q.targetUsername}</small>` : ""}
                 </div>
                 <span style="font-size:0.8rem; color:${q.completed ? '#4ade80' : '#facc15'};">
                     ${q.completed ? "مُنجز ✓" : "بانتظار الحل"}
@@ -521,12 +496,42 @@ function renderQuizzes() {
     `).join("");
 }
 
-// إنشاء أو تعديل اختبار من قبل المطور
+// التحكم بنوع المؤقت في واجهة الإنشاء
+document.getElementById("quiz-timer-type").onchange = (e) => {
+    const val = e.target.value;
+    const group = document.getElementById("timer-value-group");
+    const label = document.getElementById("timer-label-text");
+    if (val === "none") {
+        group.classList.add("hidden");
+    } else {
+        group.classList.remove("hidden");
+        label.textContent = val === "per_question" ? "زمن السؤال الواحد:" : "الزمن الكلي للاختبار:";
+    }
+};
+
+// التحكم بالاستهداف الفردي أو الجماعي
+document.querySelectorAll('input[name="target_mode"]').forEach(radio => {
+    radio.onchange = (e) => {
+        const targetInput = document.getElementById("quiz-target-user");
+        if (e.target.value === "all") {
+            targetInput.value = "ALL";
+            targetInput.disabled = true;
+        } else {
+            targetInput.value = "";
+            targetInput.disabled = false;
+        }
+    };
+});
+
 document.getElementById("create-quiz-btn").onclick = () => {
     editingQuizId = null;
-    document.getElementById("builder-modal-title").textContent = "إنشاء اختبار جديد لطالب";
+    document.getElementById("builder-modal-title").textContent = "إنشاء اختبار مسبق / نشر جديد";
     document.getElementById("quiz-title-input").value = "";
     document.getElementById("quiz-target-user").value = "";
+    document.getElementById("quiz-target-user").disabled = false;
+    document.getElementById("mode-single").checked = true;
+    document.getElementById("quiz-timer-type").value = "none";
+    document.getElementById("timer-value-group").classList.add("hidden");
     document.getElementById("builder-questions-list").innerHTML = "";
     document.getElementById("quiz-builder-modal").classList.remove("hidden");
 };
@@ -590,8 +595,11 @@ window.updateMcqOptions = (selectEl, existingData = null) => {
 document.getElementById("save-quiz-btn").onclick = async () => {
     const title = document.getElementById("quiz-title-input").value.trim();
     const targetUsername = document.getElementById("quiz-target-user").value.trim();
+    const timerType = document.getElementById("quiz-timer-type").value;
+    const timerSeconds = parseInt(document.getElementById("quiz-timer-seconds").value);
+
     if (!title || !targetUsername) {
-        alert("يرجى إدخال عنوان الاختبار ويوزرنيم الطالب!");
+        alert("يرجى إدخال عنوان الاختبار وتحديد الطلاب المستهدفين!");
         return;
     }
 
@@ -620,12 +628,15 @@ document.getElementById("save-quiz-btn").onclick = async () => {
         return;
     }
 
+    const timerSettings = { type: timerType, seconds: timerSeconds };
+
     if (editingQuizId) {
         const idx = db.quizzes.findIndex(q => q.id === editingQuizId);
         if (idx !== -1) {
             db.quizzes[idx].title = title;
             db.quizzes[idx].targetUsername = targetUsername;
             db.quizzes[idx].questions = questions;
+            db.quizzes[idx].timer = timerSettings;
         }
     } else {
         db.quizzes.push({
@@ -633,6 +644,7 @@ document.getElementById("save-quiz-btn").onclick = async () => {
             title,
             targetUsername,
             questions,
+            timer: timerSettings,
             completed: false,
             result: null
         });
@@ -655,6 +667,25 @@ window.editQuiz = (id) => {
     document.getElementById("builder-modal-title").textContent = "تعديل الاختبار";
     document.getElementById("quiz-title-input").value = q.title;
     document.getElementById("quiz-target-user").value = q.targetUsername;
+    
+    if (q.targetUsername === "ALL") {
+        document.getElementById("mode-all").checked = true;
+        document.getElementById("quiz-target-user").disabled = true;
+    } else {
+        document.getElementById("mode-single").checked = true;
+        document.getElementById("quiz-target-user").disabled = false;
+    }
+
+    if (q.timer) {
+        document.getElementById("quiz-timer-type").value = q.timer.type;
+        document.getElementById("quiz-timer-seconds").value = q.timer.seconds;
+        if (q.timer.type !== "none") {
+            document.getElementById("timer-value-group").classList.remove("hidden");
+        } else {
+            document.getElementById("timer-value-group").classList.add("hidden");
+        }
+    }
+
     document.getElementById("builder-questions-list").innerHTML = "";
     q.questions.forEach(ques => addQuestionBlock(ques.type, ques));
     document.getElementById("quiz-builder-modal").classList.remove("hidden");
@@ -669,7 +700,6 @@ window.deleteQuiz = async (id) => {
     }
 };
 
-// ==================== حل الاختبار وعرض النتيجة ====================
 let activeSolvingQuiz = null;
 
 window.startQuiz = (id) => {
@@ -703,14 +733,43 @@ window.startQuiz = (id) => {
             `;
         }
     }).join("");
+
+    // تشغيل المؤقت الزمني إذا كان مفعلاً
+    if (quizTimerInterval) clearInterval(quizTimerInterval);
+    const timerBadge = document.getElementById("quiz-timer-display");
+    
+    if (activeSolvingQuiz.timer && activeSolvingQuiz.timer.type === "total") {
+        timerBadge.classList.remove("hidden");
+        let timeLeft = activeSolvingQuiz.timer.seconds;
+        updateTimerText(timeLeft);
+        quizTimerInterval = setInterval(() => {
+            timeLeft--;
+            updateTimerText(timeLeft);
+            if (timeLeft <= 0) {
+                clearInterval(quizTimerInterval);
+                alert("انتهى الوقت المخصص للاختبار! سيتم تسليم الإجابات تلقائياً.");
+                document.getElementById("submit-quiz-answers-btn").click();
+            }
+        }, 1000);
+    } else {
+        timerBadge.classList.add("hidden");
+    }
 };
 
+function updateTimerText(seconds) {
+    const m = Math.floor(seconds / 60);
+    const s = seconds % 60;
+    document.getElementById("time-left").textContent = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+}
+
 document.getElementById("exit-solver-btn").onclick = () => {
+    if (quizTimerInterval) clearInterval(quizTimerInterval);
     document.getElementById("quiz-solver-box").classList.add("hidden");
     document.getElementById("quizzes-list").classList.remove("hidden");
 };
 
 document.getElementById("submit-quiz-answers-btn").onclick = async () => {
+    if (quizTimerInterval) clearInterval(quizTimerInterval);
     let correctCount = 0;
     const total = activeSolvingQuiz.questions.length;
 
@@ -719,7 +778,8 @@ document.getElementById("submit-quiz-answers-btn").onclick = async () => {
             const selected = document.querySelector(`input[name="ans_${idx}"]:checked`);
             if (selected && parseInt(selected.value) === q.correctIndex) correctCount++;
         } else {
-            const ans = document.getElementById(`text_ans_${idx}`).value.trim().toLowerCase();
+            const ansField = document.getElementById(`text_ans_${idx}`);
+            const ans = ansField ? ansField.value.trim().toLowerCase() : "";
             if (ans === q.correctAnswer.trim().toLowerCase()) correctCount++;
         }
     });
@@ -764,7 +824,6 @@ document.getElementById("close-result-modal").onclick = () => {
     document.getElementById("result-modal").classList.add("hidden");
 };
 
-// ==================== تبويب ملفات دراسية (PDF) ====================
 function renderPdfs() {
     const container = document.getElementById("pdfs-list");
     container.innerHTML = STUDY_PDFS.map(pdf => `
@@ -779,7 +838,6 @@ function renderPdfs() {
     `).join("");
 }
 
-// ==================== تبويب حسابي (البروفايل والإعدادات) ====================
 function loadProfileUI() {
     document.getElementById("profile-display-name").textContent = currentUser.fullName;
     document.getElementById("profile-display-username").textContent = "@" + currentUser.username;
@@ -789,7 +847,6 @@ function loadProfileUI() {
     }
 }
 
-// رفع صورة شخصية
 document.getElementById("avatar-upload").onchange = function (e) {
     const file = e.target.files[0];
     if (!file) return;
@@ -806,7 +863,6 @@ document.getElementById("avatar-upload").onchange = function (e) {
     reader.readAsDataURL(file);
 };
 
-// تغيير الاسم الكامل
 document.getElementById("save-fullname-btn").onclick = async () => {
     const newName = document.getElementById("edit-fullname-input").value.trim();
     if (!newName) return;
@@ -821,7 +877,6 @@ document.getElementById("save-fullname-btn").onclick = async () => {
     alert("تم تحديث الاسم بنجاح!");
 };
 
-// تغيير اليوزرنيم (مرة كل أسبوع)
 document.getElementById("save-username-btn").onclick = async () => {
     if (isDeveloper) {
         alert("لا يمكن تغيير يوزر حساب المطور الأساسي.");
@@ -859,7 +914,6 @@ document.getElementById("save-username-btn").onclick = async () => {
     alert("تم تغيير اليوزرنيم بنجاح!");
 };
 
-// تغيير كلمة المرور (مع التحقق من السابقة)
 document.getElementById("save-pass-btn").onclick = async () => {
     if (isDeveloper) {
         alert("كلمة مرور المطور مرتبطة بالكود المصدري.");
@@ -887,13 +941,11 @@ document.getElementById("save-pass-btn").onclick = async () => {
     alert("تم تغيير كلمة المرور بنجاح!");
 };
 
-// تسجيل الخروج
 document.getElementById("logout-btn").onclick = () => {
     localStorage.removeItem("bac_abdalqadr_session");
     location.reload();
 };
 
-// حذف الحساب نهائياً
 document.getElementById("delete-account-btn").onclick = async () => {
     if (isDeveloper) {
         alert("لا يمكن حذف حساب المطور!");
