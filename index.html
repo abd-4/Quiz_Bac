@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>البكالوريا مع عبدالقادر</title>
-    <!-- ربط ملف الـ Manifest مع مسار المستودع الصحيح -->
-    <link rel="manifest" href="/Quiz_Bac/manifest.json">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -127,7 +125,6 @@
 
             <!-- التبويب 1: الرئيسية -->
             <section id="tab-home" class="tab-view active">
-                <!-- مستطيل الإحصائيات المقسوم 4 أقسام -->
                 <div class="stats-rectangle">
                     <div class="stat-box">
                         <i class="fa-solid fa-users stat-icon"></i>
@@ -151,7 +148,6 @@
                     </div>
                 </div>
 
-                <!-- شريط تقييم الموقع -->
                 <div class="rating-card" id="rating-section">
                     <div class="rating-row">
                         <span class="rating-title">قــيّــم الـمـوقـع</span>
@@ -167,7 +163,6 @@
                     <p id="rating-locked-msg" class="hidden" style="color: #eab308; font-size: 0.85rem; margin-top: 8px;">شكراً لتقييمك! تم تسجيل تقييمك بنجاح.</p>
                 </div>
 
-                <!-- لوحة تحكم المطور (تظهر للمطور فقط في الرئيسية) -->
                 <div id="dev-users-panel" class="dev-panel hidden">
                     <div class="panel-header">
                         <h3><i class="fa-solid fa-users-gear"></i> سجل حسابات الأعضاء (صلاحيات المطور)</h3>
@@ -176,7 +171,6 @@
                     <div id="dev-users-list" class="users-list-container"></div>
                 </div>
 
-                <!-- حقوق النشر -->
                 <footer class="copyright-footer">
                     جميع الحقوق محفوظة لـِ المطور عبدالقادر 2026 ©
                 </footer>
@@ -186,19 +180,20 @@
             <section id="tab-quizzes" class="tab-view hidden">
                 <div class="section-header">
                     <h2 id="quizzes-tab-heading">اختباراتي</h2>
-                    <div style="display:flex; gap:8px; align-items:center;">
-                        <button id="request-quiz-btn" class="btn-small-gold hidden"><i class="fa-solid fa-plus"></i> طلب اختبار</button>
-                        <button id="create-quiz-btn" class="btn-small-gold hidden">+ إنشاء اختبار لطالب</button>
+                    <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+                        <button id="request-quiz-btn" class="btn-small-gold hidden"><i class="fa-solid fa-paper-plane"></i> طلب اختبار</button>
+                        <button id="create-quiz-btn" class="btn-small-gold hidden">+ إنشاء اختبار جديد</button>
                     </div>
                 </div>
 
                 <!-- قائمة الاختبارات -->
                 <div id="quizzes-list" class="cards-list"></div>
 
-                <!-- واجهة حل الاختبار للطالب -->
+                <!-- واجهة حل الاختبار للطالب مع المؤقت -->
                 <div id="quiz-solver-box" class="quiz-box hidden">
                     <div class="quiz-solver-header">
                         <h3 id="solving-quiz-title">عنوان الاختبار</h3>
+                        <div id="quiz-timer-display" class="timer-badge hidden"><i class="fa-solid fa-clock"></i> <span id="time-left">00:00</span></div>
                         <button id="exit-solver-btn" class="btn-text-danger">إغلاق</button>
                     </div>
                     <div id="solver-questions-container"></div>
@@ -228,7 +223,6 @@
                 </div>
 
                 <div class="settings-list">
-                    <!-- تغيير الاسم -->
                     <div class="setting-item">
                         <label>تغيير الاسم الكامل</label>
                         <div class="inline-edit">
@@ -237,7 +231,6 @@
                         </div>
                     </div>
 
-                    <!-- تغيير اليوزرنيم -->
                     <div class="setting-item">
                         <label>تغيير اليوزرنيم (Username)</label>
                         <p class="hint-text">⚠️ لن تتمكن من تغيير اليوزر إلا مرة في الأسبوع.</p>
@@ -247,7 +240,6 @@
                         </div>
                     </div>
 
-                    <!-- تغيير كلمة المرور -->
                     <div class="setting-item">
                         <label>تغيير كلمة المرور</label>
                         <div class="password-wrapper" style="margin-bottom: 8px;">
@@ -263,7 +255,6 @@
                         </div>
                     </div>
 
-                    <!-- تسجيل الخروج وحذف الحساب -->
                     <div class="danger-zone">
                         <button id="logout-btn" class="btn-outline-gold" style="width: 100%; margin-bottom: 10px;">
                             <i class="fa-solid fa-right-from-bracket"></i> تسجيل الخروج
@@ -300,20 +291,19 @@
 
     <!-- ==================== النوافذ المنبثقة (Modals) ==================== -->
 
-    <!-- نافذة طلب اختبار (للطالب) -->
     <div id="request-quiz-modal" class="modal-overlay hidden">
         <div class="modal-box">
             <h3><i class="fa-solid fa-paper-plane"></i> طلب اختبار جديد</h3>
             <div class="input-group">
-                <label>اسم المادة:</label>
+                <label>المادة (المطلوب إنشاء اختبار لها)</label>
                 <input type="text" id="req-subject" placeholder="مثال: علم الأحياء - العصبية">
             </div>
             <div class="input-group">
-                <label>اسم البحث (الوحدة):</label>
+                <label>اسم البحث (من المادة المطلوبة)</label>
                 <input type="text" id="req-topic" placeholder="مثال: المستقبلات الحسية">
             </div>
             <div class="input-group">
-                <label>اسم مقدم الطلب (الطالب)</label>
+                <label>اسم مقدم الطلب (اسم الطالب)</label>
                 <input type="text" id="req-student-name">
             </div>
             <div class="input-group">
@@ -321,32 +311,57 @@
                 <input type="text" id="req-notes" placeholder="أي تفاصيل إضافية...">
             </div>
             <div class="modal-actions">
-                <button id="send-quiz-request-whatsapp" class="btn-primary-gold">إرسال</button>
+                <button id="send-quiz-request-whatsapp" class="btn-primary-gold">إرسال إلى واتساب المطور</button>
                 <button id="cancel-quiz-request" class="btn-outline-gold">إلغاء</button>
             </div>
         </div>
     </div>
 
-    <!-- نافذة عرض النتيجة -->
     <div id="result-modal" class="modal-overlay hidden">
         <div class="modal-box">
             <h3><i class="fa-solid fa-square-poll-vertical"></i> نتيجة الاختبار</h3>
             <div id="result-details" class="result-grid"></div>
-            <button id="close-result-modal" class="btn-primary-gold">إلغاء</button>
+            <button id="close-result-modal" class="btn-primary-gold">إغلاق</button>
         </div>
     </div>
 
-    <!-- نافذة إنشاء / تعديل اختبار للمطور -->
+    <!-- نافذة إنشاء/تعديل وتجهيز الاختبارات للمطور مع خيارات الإرسال المؤقت والجماعي -->
     <div id="quiz-builder-modal" class="modal-overlay hidden">
         <div class="modal-box modal-large">
-            <h3 id="builder-modal-title">إنشاء اختبار جديد لطالب</h3>
+            <h3 id="builder-modal-title">إنشاء اختبار جديد</h3>
             <div class="input-group">
                 <label>عنوان الاختبار / الدرس</label>
                 <input type="text" id="quiz-title-input" placeholder="مثال: اختبار العصبية الشامل">
             </div>
+
+            <!-- خيار نمط المؤقت الزمني -->
             <div class="input-group">
-                <label>يوزرنيم الطالب المستهدف (Username)</label>
-                <input type="text" id="quiz-target-user" placeholder="أدخل يوزر الطالب بدقة" dir="ltr">
+                <label>إعداد المؤقت الزمني</label>
+                <select id="quiz-timer-type" style="width:100%; padding:10px; border-radius:10px; background:#2b343e; color:#fff; border:1.5px solid #9a6326;">
+                    <option value="none">بدون مؤقت زمني</option>
+                    <option value="per_question">مؤقت لكل سؤال (30 ثانية / دقيقة / دقيقتان)</option>
+                    <option value="total">مؤقت كامل للاختبار (لكل الأسئلة مرة واحدة)</option>
+                </select>
+            </div>
+
+            <div id="timer-value-group" class="input-group hidden">
+                <label id="timer-label-text">حدد الزمن (بالثواني أو الدقائق)</label>
+                <select id="quiz-timer-seconds" style="width:100%; padding:10px; border-radius:10px; background:#2b343e; color:#fff; border:1.5px solid #9a6326;">
+                    <option value="30">30 ثانية</option>
+                    <option value="60">دقيقة واحدة (60 ثانية)</option>
+                    <option value="120">دقيقتان (120 ثانية)</option>
+                    <option value="300">5 دقائق (300 ثانية)</option>
+                </select>
+            </div>
+
+            <!-- خيار الاستهداف الجماعي أو الفردي -->
+            <div class="input-group">
+                <label>اختيار الطلاب المستهدفين</label>
+                <div style="display:flex; gap:10px; margin-bottom:8px;">
+                    <label style="cursor:pointer; font-size:0.9rem;"><input type="radio" name="target_mode" value="single" checked id="mode-single"> طالب واحد (بالمعرف)</label>
+                    <label style="cursor:pointer; font-size:0.9rem;"><input type="radio" name="target_mode" value="all" id="mode-all"> كافة الطلاب (إرسال جماعي)</label>
+                </div>
+                <input type="text" id="quiz-target-user" placeholder="يوزرنيم الطالب (مثال: ahmad_123)" dir="ltr">
             </div>
 
             <div id="builder-questions-list"></div>
@@ -357,13 +372,12 @@
             </div>
 
             <div class="modal-actions" style="margin-top: 15px;">
-                <button id="save-quiz-btn" class="btn-primary-gold">حفظ وإرسال الاختبار</button>
+                <button id="save-quiz-btn" class="btn-primary-gold">حفظ كمسودة / نشر مباشر</button>
                 <button id="cancel-quiz-builder" class="btn-outline-gold">إلغاء</button>
             </div>
         </div>
     </div>
 
-    <!-- نافذة تعديل/إضافة مستخدم للمطور -->
     <div id="dev-user-modal" class="modal-overlay hidden">
         <div class="modal-box">
             <h3 id="dev-user-modal-title">بيانات الطالب</h3>
