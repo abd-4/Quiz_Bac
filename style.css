@@ -755,3 +755,104 @@ body {
 }
 
 @keyframes spin { to { transform: rotate(360deg); } }
+
+/* ==================== إضافات تبويب شروحات والفيديوهات ==================== */
+.subjects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 12px;
+    margin-top: 15px;
+}
+
+.subject-card {
+    background: var(--card-bg);
+    border: 1.5px solid var(--border-gold);
+    border-radius: 14px;
+    padding: 16px 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s, background 0.2s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.subject-card:hover {
+    transform: translateY(-3px);
+    background: rgba(217, 130, 30, 0.1);
+}
+
+.subject-card i {
+    font-size: 1.8rem;
+    color: var(--gold-main);
+}
+
+.subject-card span {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: #fff;
+}
+
+/* شبكة أزرار دروس يوتيوب (ثلاث مستطيلات أفقية متساوية في السطر) */
+.videos-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.video-btn-item {
+    background: var(--input-bg);
+    border: 1px solid var(--border-gold);
+    border-radius: 10px;
+    padding: 12px 8px;
+    text-align: center;
+    color: #fff;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 55px;
+    transition: background 0.2s, border-color 0.2s;
+}
+
+.video-btn-item:hover {
+    background: var(--gold-main);
+    border-color: #fff;
+}
+
+@media (max-width: 480px) {
+    .videos-grid {
+        grid-template-columns: repeat(3, 1fr); /* الحفاظ على 3 أزرار أفقية كما طلبت */
+        gap: 6px;
+    }
+    .video-btn-item {
+        font-size: 0.75rem;
+        padding: 10px 4px;
+        min-height: 50px;
+    }
+}
+
+/* ==================== إضافات نظام المؤقت والاختبارات السحابية ==================== */
+.quiz-timer-badge {
+    background: rgba(239, 68, 68, 0.2);
+    color: #ef4444;
+    border: 1px solid #ef4444;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.82rem;
+    font-weight: 700;
+}
+
+.cloud-templates-box {
+    background: var(--input-bg);
+    border: 1px dashed var(--gold-main);
+    border-radius: 12px;
+    padding: 12px;
+    margin-bottom: 14px;
+}
+
