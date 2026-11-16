@@ -12,19 +12,17 @@
 </head>
 <body>
 
-    <!-- شاشة التحميل السريعة -->
     <div id="loader" class="loader-overlay hidden">
         <div class="spinner"></div>
         <p id="loader-text">جاري المزامنة...</p>
     </div>
 
-    <!-- ==================== 1. شاشة تسجيل الدخول ==================== -->
+    <!-- شاشة تسجيل الدخول -->
     <section id="auth-screen" class="auth-wrapper">
         <div class="login-card">
             <h1 class="brand-title">البكالوريا مع عبدالقادر</h1>
             <p class="welcome-subtitle" dir="ltr">: Welcome</p>
 
-            <!-- نموذج تسجيل الدخول -->
             <form id="login-form">
                 <div class="input-group">
                     <label dir="ltr">Email or Username</label>
@@ -45,28 +43,23 @@
                         <span class="custom-checkbox"></span>
                         <span>تذكرني</span>
                     </label>
-                    <a href="https://wa.me/+963939084991?text=مرحباً%20مطور%20عبدالقادر،%20نسيت%20كلمة%20المرور%20الخاصة%20بحسابي%20في%20الموقع" target="_blank" class="forgot-link" dir="ltr">Forgot Password?</a>
+                    <a href="https://wa.me/+963939084991?text=مرحباً%20مطور%20عبدالقادر،%20نسيت%20كلمة%20المرور" target="_blank" class="forgot-link" dir="ltr">Forgot Password?</a>
                 </div>
 
                 <button type="submit" class="btn-primary-gold">تسجيل دخول</button>
-
                 <div class="divider" dir="ltr">or</div>
-
                 <button type="button" id="show-register-btn" class="btn-outline-gold">إنشاء حساب جديد</button>
             </form>
 
-            <!-- نموذج إنشاء حساب جديد -->
             <form id="register-form" class="hidden">
                 <div class="input-group">
                     <label>الاسم الكامل للطالب</label>
                     <input type="text" id="reg-name" placeholder="مثال: أحمد محمد" required>
                 </div>
-
                 <div class="input-group">
                     <label dir="ltr">Email</label>
                     <input type="email" id="reg-email" placeholder="ضع بريدك الإلكتروني" required>
                 </div>
-
                 <div class="input-group">
                     <label dir="ltr">Password</label>
                     <div class="password-wrapper">
@@ -74,21 +67,18 @@
                         <i class="fa-solid fa-eye toggle-password" id="toggle-reg-pass"></i>
                     </div>
                 </div>
-
                 <button type="submit" class="btn-primary-gold">تأكيد إنشاء الحساب</button>
-
                 <div class="divider" dir="ltr">or</div>
-
                 <button type="button" id="show-login-btn" class="btn-outline-gold">العودة لتسجيل الدخول</button>
             </form>
         </div>
     </section>
 
-    <!-- نافذة التحقق من كلمة سر المطور -->
+    <!-- نافذة تحقق المطور -->
     <div id="dev-modal" class="modal-overlay hidden">
         <div class="modal-box">
             <h3><i class="fa-solid fa-shield-halved"></i> تحقق المطور</h3>
-            <p>تم التعرف على بريد صاحب الموقع. أدخل كلمة المرور السرية للدخول بوضع المطور:</p>
+            <p>أدخل كلمة المرور السرية للدخول بوضع المطور:</p>
             <div class="password-wrapper" style="margin: 14px 0;">
                 <input type="password" id="dev-secret-input" placeholder="كلمة سر المطور" dir="ltr" style="margin:0;">
                 <i class="fa-solid fa-eye toggle-password" id="toggle-dev-pass"></i>
@@ -100,32 +90,27 @@
         </div>
     </div>
 
-    <!-- نافذة عرض اليوزرنيم الجديد بعد التسجيل -->
+    <!-- نافذة اليوزرنيم -->
     <div id="username-alert-modal" class="modal-overlay hidden">
         <div class="modal-box">
             <h3><i class="fa-solid fa-circle-check" style="color: #4ade80;"></i> تم إنشاء حسابك بنجاح!</h3>
-            <p>تم توليد اسم مستخدم (Username) خاص بك:</p>
+            <p>اسم المستخدم الخاص بك:</p>
             <div class="generated-user-box" id="generated-username-display" dir="ltr"></div>
-            <p class="warning-text">⚠️ يرجى حفظ هذا اليوزرنيم جيداً وعدم نسيانه، حيث يمكنك استخدامه لتسجيل الدخول مستقبلاً بدلاً من البريد الإلكتروني.</p>
-            <button id="close-username-modal" class="btn-primary-gold">حفظت اليوزر، دخول للموقع</button>
+            <p class="warning-text">⚠️ احفظ هذا اليوزرنيم لتسجيل الدخول مستقبلاً.</p>
+            <button id="close-username-modal" class="btn-primary-gold">حفظت اليوزر، دخول</button>
         </div>
     </div>
 
-    <!-- ==================== 2. الواجهة الرئيسية للتطبيق ==================== -->
+    <!-- واجهة التطبيق الداخلية -->
     <div id="app-container" class="app-wrapper hidden">
-        
-        <!-- شريط علوي مصغر -->
         <header class="top-header">
             <div class="header-brand">البكالوريا مع عبدالقادر</div>
             <span id="role-badge" class="badge-student">طالب</span>
         </header>
 
-        <!-- محتوى التبويبات -->
         <main class="main-content">
-
             <!-- التبويب 1: الرئيسية -->
             <section id="tab-home" class="tab-view active">
-                <!-- مستطيل الإحصائيات المقسوم 4 أقسام -->
                 <div class="stats-rectangle">
                     <div class="stat-box">
                         <i class="fa-solid fa-users stat-icon"></i>
@@ -149,7 +134,6 @@
                     </div>
                 </div>
 
-                <!-- شريط تقييم الموقع -->
                 <div class="rating-card" id="rating-section">
                     <div class="rating-row">
                         <span class="rating-title">قــيّــم الـمـوقـع</span>
@@ -162,25 +146,21 @@
                         </div>
                     </div>
                     <button id="submit-rating-btn" class="btn-done-rating">تم</button>
-                    <p id="rating-locked-msg" class="hidden" style="color: #eab308; font-size: 0.85rem; margin-top: 8px;">شكراً لتقييمك! تم تسجيل تقييمك بنجاح.</p>
+                    <p id="rating-locked-msg" class="hidden" style="color: #eab308; font-size: 0.85rem; margin-top: 8px;">شكراً لتقييمك!</p>
                 </div>
 
-                <!-- لوحة تحكم المطور (تظهر للمطور فقط في الرئيسية) -->
                 <div id="dev-users-panel" class="dev-panel hidden">
                     <div class="panel-header">
-                        <h3><i class="fa-solid fa-users-gear"></i> سجل حسابات الأعضاء (صلاحيات المطور)</h3>
+                        <h3><i class="fa-solid fa-users-gear"></i> سجل حسابات الأعضاء</h3>
                         <button id="dev-add-user-btn" class="btn-small-gold">+ إضافة طالب</button>
                     </div>
                     <div id="dev-users-list" class="users-list-container"></div>
                 </div>
 
-                <!-- حقوق النشر -->
-                <footer class="copyright-footer">
-                    جميع الحقوق محفوظة لـِ المطور عبدالقادر 2026 ©
-                </footer>
+                <footer class="copyright-footer">جميع الحقوق محفوظة لـِ المطور عبدالقادر 2026 ©</footer>
             </section>
 
-            <!-- التبويب 2: اختبارات الطلاب (للمطور) / اختباراتي (للطالب) -->
+            <!-- التبويب 2: اختبارات الطلاب / اختباراتي -->
             <section id="tab-quizzes" class="tab-view hidden">
                 <div class="section-header">
                     <h2 id="quizzes-tab-heading">اختباراتي</h2>
@@ -189,15 +169,16 @@
                         <button id="create-quiz-btn" class="btn-small-gold hidden">+ إنشاء اختبار لطالب</button>
                     </div>
                 </div>
-
-                <!-- قائمة الاختبارات -->
                 <div id="quizzes-list" class="cards-list"></div>
 
-                <!-- واجهة حل الاختبار للطالب -->
+                <!-- حل الاختبار مع المؤقت الزمني -->
                 <div id="quiz-solver-box" class="quiz-box hidden">
                     <div class="quiz-solver-header">
                         <h3 id="solving-quiz-title">عنوان الاختبار</h3>
-                        <button id="exit-solver-btn" class="btn-text-danger">إغلاق</button>
+                        <div style="display:flex; align-items:center; gap:10px;">
+                            <span id="quiz-global-timer" class="quiz-timer-badge"><i class="fa-solid fa-clock"></i> 00:00</span>
+                            <button id="exit-solver-btn" class="btn-text-danger">إغلاق</button>
+                        </div>
                     </div>
                     <div id="solver-questions-container"></div>
                     <button id="submit-quiz-answers-btn" class="btn-primary-gold" style="margin-top: 15px;">إنهاء وتسليم الإجابات</button>
@@ -206,17 +187,64 @@
 
             <!-- التبويب 3: ملفات دراسية -->
             <section id="tab-pdfs" class="tab-view hidden">
-                <div class="section-header">
-                    <h2>ملفات دراسية (PDF)</h2>
-                </div>
+                <div class="section-header"><h2>ملفات دراسية (PDF)</h2></div>
                 <div id="pdfs-list" class="cards-list"></div>
             </section>
 
-            <!-- التبويب 4: حسابي -->
+            <!-- التبويب الجديد 4: شروحات (يوتيوب) -->
+            <section id="tab-explanations" class="tab-view hidden">
+                <div class="section-header">
+                    <h2>شروحات المنهاج الدراسي (فيديوهات يوتيوب)</h2>
+                </div>
+                <!-- القائمة الرئيسية للمواد الدراسية -->
+                <div id="subjects-main-menu" class="subjects-grid">
+                    <div class="subject-card" onclick="openSubjectVideos('math')">
+                        <i class="fa-solid fa-calculator"></i>
+                        <span>رياضيات</span>
+                    </div>
+                    <div class="subject-card" onclick="openSubjectVideos('arabic')">
+                        <i class="fa-solid fa-book"></i>
+                        <span>لغة عربية</span>
+                    </div>
+                    <div class="subject-card" onclick="openSubjectVideos('physics')">
+                        <i class="fa-solid fa-atom"></i>
+                        <span>فيزياء</span>
+                    </div>
+                    <div class="subject-card" onclick="openSubjectVideos('chemistry')">
+                        <i class="fa-solid fa-flask"></i>
+                        <span>كيمياء</span>
+                    </div>
+                    <div class="subject-card" onclick="openSubjectVideos('biology')">
+                        <i class="fa-solid fa-dna"></i>
+                        <span>علم الأحياء</span>
+                    </div>
+                    <div class="subject-card" onclick="openSubjectVideos('religion')">
+                        <i class="fa-solid fa-mosque"></i>
+                        <span>تربية دينية</span>
+                    </div>
+                    <div class="subject-card" onclick="openSubjectVideos('english')">
+                        <i class="fa-solid fa-language"></i>
+                        <span>لغة انكليزية</span>
+                    </div>
+                    <div class="subject-card" onclick="openSubjectVideos('foreign')">
+                        <i class="fa-solid fa-globe"></i>
+                        <span>لغة أجنبية</span>
+                    </div>
+                </div>
+
+                <!-- القائمة الفرعية لعرض أزرار الفيديوهات (شبكة 3 أزرار أفقية) -->
+                <div id="subject-videos-container" class="hidden">
+                    <button onclick="backToSubjectsMenu()" class="btn-small-gold" style="margin-bottom: 12px;"><i class="fa-solid fa-arrow-right"></i> عودة للمواد</button>
+                    <h3 id="selected-subject-title" style="color: var(--gold-light); margin-bottom: 10px;"></h3>
+                    <div id="videos-buttons-grid" class="videos-grid"></div>
+                </div>
+            </section>
+
+            <!-- التبويب 5: حسابي -->
             <section id="tab-profile" class="tab-view hidden">
                 <div class="profile-card">
                     <div class="avatar-wrapper">
-                        <img id="profile-avatar-img" src="https://ui-avatars.com/api/?name=Student&background=d97706&color=fff&size=128" alt="صورة البروفايل">
+                        <img id="profile-avatar-img" src="https://ui-avatars.com/api/?name=Student&background=d97706&color=fff&size=128" alt="صورة">
                         <label for="avatar-upload" class="avatar-edit-badge"><i class="fa-solid fa-camera"></i></label>
                         <input type="file" id="avatar-upload" accept="image/*" class="hidden">
                     </div>
@@ -226,7 +254,6 @@
                 </div>
 
                 <div class="settings-list">
-                    <!-- تغيير الاسم -->
                     <div class="setting-item">
                         <label>تغيير الاسم الكامل</label>
                         <div class="inline-edit">
@@ -234,18 +261,14 @@
                             <button id="save-fullname-btn" class="btn-small-gold">حفظ</button>
                         </div>
                     </div>
-
-                    <!-- تغيير اليوزرنيم -->
                     <div class="setting-item">
-                        <label>تغيير اليوزرنيم (Username)</label>
-                        <p class="hint-text">⚠️ لن تتمكن من تغيير اليوزر إلا مرة في الأسبوع.</p>
+                        <label>تغيير اليوزرنيم</label>
+                        <p class="hint-text">⚠️ مرة في الأسبوع.</p>
                         <div class="inline-edit">
-                            <input type="text" id="edit-username-input" placeholder="اليوزرنيم الجديد" dir="ltr">
+                            <input type="text" id="edit-username-input" placeholder="اليوزر الجديد" dir="ltr">
                             <button id="save-username-btn" class="btn-small-gold">تحديث</button>
                         </div>
                     </div>
-
-                    <!-- تغيير كلمة المرور -->
                     <div class="setting-item">
                         <label>تغيير كلمة المرور</label>
                         <div class="password-wrapper" style="margin-bottom: 8px;">
@@ -260,22 +283,15 @@
                             <button id="save-pass-btn" class="btn-small-gold">تغيير</button>
                         </div>
                     </div>
-
-                    <!-- تسجيل الخروج وحذف الحساب -->
                     <div class="danger-zone">
-                        <button id="logout-btn" class="btn-outline-gold" style="width: 100%; margin-bottom: 10px;">
-                            <i class="fa-solid fa-right-from-bracket"></i> تسجيل الخروج
-                        </button>
-                        <button id="delete-account-btn" class="btn-danger-outline" style="width: 100%;">
-                            <i class="fa-solid fa-trash"></i> حذف الحساب نهائياً
-                        </button>
+                        <button id="logout-btn" class="btn-outline-gold" style="width: 100%; margin-bottom: 10px;"><i class="fa-solid fa-right-from-bracket"></i> تسجيل الخروج</button>
+                        <button id="delete-account-btn" class="btn-danger-outline" style="width: 100%;"><i class="fa-solid fa-trash"></i> حذف الحساب نهائياً</button>
                     </div>
                 </div>
             </section>
-
         </main>
 
-        <!-- شريط التبويبات السفلي الثابت -->
+        <!-- شريط التنقل السفلي -->
         <nav class="bottom-nav">
             <button class="nav-item active" data-target="tab-home">
                 <i class="fa-solid fa-house"></i>
@@ -289,6 +305,10 @@
                 <i class="fa-solid fa-book-open"></i>
                 <span>ملفات دراسية</span>
             </button>
+            <button class="nav-item" data-target="tab-explanations">
+                <i class="fa-solid fa-video"></i>
+                <span>شروحات</span>
+            </button>
             <button class="nav-item" data-target="tab-profile">
                 <i class="fa-solid fa-user"></i>
                 <span>حسابي</span>
@@ -296,36 +316,33 @@
         </nav>
     </div>
 
-    <!-- ==================== النوافذ المنبثقة (Modals) ==================== -->
-
-    <!-- نافذة طلب اختبار (للطالب) -->
+    <!-- النوافذ المنبثقة -->
     <div id="request-quiz-modal" class="modal-overlay hidden">
         <div class="modal-box">
             <h3><i class="fa-solid fa-paper-plane"></i> طلب اختبار جديد</h3>
             <div class="input-group">
-                <label>المادة (المطلوب إنشاء اختبار لها)</label>
-                <input type="text" id="req-subject" placeholder="مثال: علم الأحياء - العصبية">
+                <label>المادة</label>
+                <input type="text" id="req-subject" placeholder="مثال: علم الأحياء">
             </div>
             <div class="input-group">
-                <label>اسم البحث (من المادة المطلوبة)</label>
-                <input type="text" id="req-topic" placeholder="مثال: المستقبلات الحسية">
+                <label>اسم البحث</label>
+                <input type="text" id="req-topic" placeholder="مثال: المستقبلات">
             </div>
             <div class="input-group">
-                <label>اسم مقدم الطلب (اسم الطالب)</label>
+                <label>اسم الطالب</label>
                 <input type="text" id="req-student-name">
             </div>
             <div class="input-group">
-                <label>إضافة ملاحظة</label>
-                <input type="text" id="req-notes" placeholder="أي تفاصيل إضافية...">
+                <label>ملاحظة</label>
+                <input type="text" id="req-notes">
             </div>
             <div class="modal-actions">
-                <button id="send-quiz-request-whatsapp" class="btn-primary-gold">إرسال إلى واتساب المطور</button>
+                <button id="send-quiz-request-whatsapp" class="btn-primary-gold">إرسال لواتساب المطور</button>
                 <button id="cancel-quiz-request" class="btn-outline-gold">إلغاء</button>
             </div>
         </div>
     </div>
 
-    <!-- نافذة عرض النتيجة -->
     <div id="result-modal" class="modal-overlay hidden">
         <div class="modal-box">
             <h3><i class="fa-solid fa-square-poll-vertical"></i> نتيجة الاختبار</h3>
@@ -334,49 +351,49 @@
         </div>
     </div>
 
-    <!-- نافذة إنشاء / تعديل اختبار للمطور -->
+    <!-- نافذة بناء الاختبار (المطور) مع خيارات الحفظ السحابي والقوالب السابقة -->
     <div id="quiz-builder-modal" class="modal-overlay hidden">
         <div class="modal-box modal-large">
-            <h3 id="builder-modal-title">إنشاء اختبار جديد لطالب</h3>
+            <h3 id="builder-modal-title">إنشاء اختبار جديد</h3>
+            
+            <!-- ميزة اختيار اختبار محفوظ سحابياً لإعادة مشاركته فوراً -->
+            <div class="cloud-templates-box">
+                <label style="font-weight:700; color:var(--gold-light); display:block; margin-bottom:6px;">☁️ إعادة مشاركة اختبار محفوظ سابقاً:</label>
+                <select id="cloud-quiz-templates-select" style="width:100%; padding:8px; border-radius:8px; background:#131c24; color:#fff; border:1px solid var(--border-gold); margin-bottom:8px;">
+                    <option value="">-- اختر اختباراً جاهزاً لإعادة استخدامه --</option>
+                </select>
+                <button type="button" id="load-cloud-template-btn" class="btn-small-gold">تحميل هذا الاختبار وتعديله/مشاركته</button>
+            </div>
+
             <div class="input-group">
-                <label>عنوان الاختبار / الدرس</label>
-                <input type="text" id="quiz-title-input" placeholder="مثال: اختبار العصبية الشامل">
+                <label>عنوان الاختبار</label>
+                <input type="text" id="quiz-title-input" placeholder="مثال: اختبار شامل">
             </div>
             <div class="input-group">
-                <label>يوزرنيم الطالب المستهدف (Username)</label>
-                <input type="text" id="quiz-target-user" placeholder="أدخل يوزر الطالب بدقة" dir="ltr">
+                <label>يوزرنيم الطالب المستهدف (أو أدخل `all` لمشاركته للجميع)</label>
+                <input type="text" id="quiz-target-user" placeholder="أدخل يوزر الطالب أو all" dir="ltr">
             </div>
 
             <div id="builder-questions-list"></div>
 
             <div class="builder-controls">
-                <button type="button" id="add-mcq-btn" class="btn-outline-gold btn-sm">+ سؤال خيارات متعددة</button>
-                <button type="button" id="add-text-q-btn" class="btn-outline-gold btn-sm">+ سؤال إجابة كتابية</button>
+                <button type="button" id="add-mcq-btn" class="btn-outline-gold btn-sm">+ خيارات متعددة</button>
+                <button type="button" id="add-text-q-btn" class="btn-outline-gold btn-sm">+ إجابة كتابية</button>
             </div>
 
             <div class="modal-actions" style="margin-top: 15px;">
-                <button id="save-quiz-btn" class="btn-primary-gold">حفظ وإرسال الاختبار</button>
+                <button id="save-quiz-btn" class="btn-primary-gold">حفظ سحابياً ومشاركة فورية</button>
                 <button id="cancel-quiz-builder" class="btn-outline-gold">إلغاء</button>
             </div>
         </div>
     </div>
 
-    <!-- نافذة تعديل/إضافة مستخدم للمطور -->
     <div id="dev-user-modal" class="modal-overlay hidden">
         <div class="modal-box">
             <h3 id="dev-user-modal-title">بيانات الطالب</h3>
-            <div class="input-group">
-                <label>الاسم الكامل</label>
-                <input type="text" id="dev-u-name">
-            </div>
-            <div class="input-group">
-                <label>البريد الإلكتروني</label>
-                <input type="email" id="dev-u-email" dir="ltr">
-            </div>
-            <div class="input-group">
-                <label>اليوزرنيم</label>
-                <input type="text" id="dev-u-username" dir="ltr">
-            </div>
+            <div class="input-group"><label>الاسم</label><input type="text" id="dev-u-name"></div>
+            <div class="input-group"><label>البريد</label><input type="email" id="dev-u-email" dir="ltr"></div>
+            <div class="input-group"><label>اليوزرنيم</label><input type="text" id="dev-u-username" dir="ltr"></div>
             <div class="input-group">
                 <label>كلمة المرور</label>
                 <div class="password-wrapper">
