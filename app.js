@@ -18,9 +18,9 @@ const STUDY_PDFS = [
 // روابط شروحات يوتيوب للمواد (اتركت لك أماكن النصوص والروابط لتعديلها بحرية)
 const SUBJECT_VIDEOS_DATA = {
     math: [
-        { text: "نص1 (درس النهايات)", url: "https://youtube.com/watch?v=example1" },
-        { text: "نص2 (الاشتقاق)", url: "https://youtube.com/watch?v=example2" },
-        { text: "نص3 (التكامل)", url: "https://youtube.com/watch?v=example3" },
+        { text: "متتاليات (1)", url: "https://youtu.be/NQOLOW6kkiE?si=sUsS3gxonkl2sARt" },
+        { text: "متتاليات (2)", url: "https://youtu.be/cQ835dUifbM?si=s3B_qoUesPUMKjHD" },
+        { text: "متتاليات (3)", url: "https://youtu.be/YrHphQxsLuU?si=2HkqL6ki_R_NiG8M" },
         { text: "نص4", url: "#" }, { text: "نص5", url: "#" }, { text: "نص6", url: "#" }
     ],
     arabic: [
