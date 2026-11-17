@@ -600,10 +600,11 @@ function addQuestionBlock(type, existingData = null) {
 
 window.updateMcqOptions = (selectEl, existingData = null) => {
     const count = parseInt(selectEl.value);
-    const box = selectEl.nextElementSibling.nextElementSibling;
+    const box = selectEl.parentElement.querySelector(".mcq-options-inputs");
+    if (!box) return;
     box.innerHTML = "";
     for (let i = 0; i < count; i++) {
-        const val = existingData && existingData.options[i] ? existingData.options[i] : "";
+        const val = existingData && existingData.options && existingData.options[i] ? existingData.options[i] : "";
         const isCorrect = existingData ? existingData.correctIndex === i : i === 0;
         box.innerHTML += `
             <div style="display:flex; align-items:center; gap:6px; margin-bottom:5px;">
