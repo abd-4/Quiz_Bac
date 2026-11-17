@@ -560,6 +560,8 @@ function addQuestionBlock(type, existingData = null) {
     div.setAttribute("data-type", type);
 
     const timerVal = existingData && existingData.timerSeconds ? existingData.timerSeconds : 60;
+    const groupName = "group_q_" + Date.now() + "_" + Math.floor(Math.random() * 10000);
+    div.setAttribute('data-group-name', groupName);
 
     if (type === "mcq") {
         div.innerHTML = `
@@ -602,13 +604,17 @@ window.updateMcqOptions = (selectEl, existingData = null) => {
     const count = parseInt(selectEl.value);
     const box = selectEl.parentElement.querySelector(".mcq-options-inputs");
     if (!box) return;
+
+    const questionCard = selectEl.closest('.builder-q-card');
+    const groupName = questionCard ? questionCard.getAttribute('data-group-name') : ("group_" + Math.random());
+
     box.innerHTML = "";
     for (let i = 0; i < count; i++) {
         const val = existingData && existingData.options && existingData.options[i] ? existingData.options[i] : "";
         const isCorrect = existingData ? existingData.correctIndex === i : i === 0;
         box.innerHTML += `
             <div style="display:flex; align-items:center; gap:6px; margin-bottom:5px;">
-                <input type="radio" name="opt_group_${Math.random()}" class="opt-radio" ${isCorrect ? "checked" : ""}>
+                <input type="radio" name="${groupName}" class="opt-radio" ${isCorrect ? "checked" : ""}>
                 <input type="text" class="opt-val" placeholder="الخيار ${i + 1}" value="${val}" style="flex:1; padding:6px; border-radius:6px; background:#222b35; color:#fff; border:1px solid #555;">
             </div>
         `;
@@ -792,14 +798,18 @@ document.getElementById("submit-quiz-answers-btn").onclick = async () => {
     if (quizTimerInterval) clearInterval(quizTimerInterval);
     let correctCount = 0;
     const total = activeSolvingQuiz.questions.length;
+    const studentAnswers = [];
 
     activeSolvingQuiz.questions.forEach((q, idx) => {
         if (q.type === "mcq") {
             const selected = document.querySelector(`input[name="ans_${idx}"]:checked`);
-            if (selected && parseInt(selected.value) === q.correctIndex) correctCount++;
+            const ansVal = selected ? parseInt(selected.value) : null;
+            studentAnswers.push(ansVal);
+            if (ansVal === q.correctIndex) correctCount++;
         } else {
-            const ans = document.getElementById(`text_ans_${idx}`).value.trim().toLowerCase();
-            if (ans === q.correctAnswer.trim().toLowerCase()) correctCount++;
+            const ans = document.getElementById(`text_ans_${idx}`).value.trim();
+            studentAnswers.push(ans);
+            if (ans.toLowerCase() === q.correctAnswer.trim().toLowerCase()) correctCount++;
         }
     });
 
@@ -808,6 +818,7 @@ document.getElementById("submit-quiz-answers-btn").onclick = async () => {
     let evaluation = percentage >= 90 ? "ممتاز جداً 🌟" : percentage >= 75 ? "جيد جداً 👍" : percentage >= 50 ? "مقبول 👌" : "يحتاج مراجعة";
 
     activeSolvingQuiz.completed = true;
+    activeSolvingQuiz.studentAnswers = studentAnswers;
     activeSolvingQuiz.result = { correctCount, wrongCount, total, percentage, evaluation };
 
     await saveDatabase();
@@ -825,15 +836,94 @@ window.showQuizResult = (id) => {
         box.innerHTML = "<p style='text-align:center; color:#fbbf24;'>لم يُحل بعد!</p>";
     } else {
         const r = q.result;
-        box.innerHTML = `
-            <div>✅ الصحيحة: <strong>${r.correctCount}</strong></div>
-            <div>❌ الخاطئة: <strong>${r.wrongCount}</strong></div>
-            <div>📊 المجموع: <strong>${r.total}</strong></div>
-            <div>🎯 النسبة: <strong>${r.percentage}%</strong></div>
-            <div>🏅 التقييم: <strong>${r.evaluation}</strong></div>
+        let detailsHtml = `
+            <div style="margin-bottom:12px; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:8px; text-align:right;">
+                <div>👤 الطالب: <strong>@${q.targetUsername}</strong></div>
+                <div>✅ الصحيحة: <strong>${r.correctCount}</strong></div>
+                <div>❌ الخاطئة: <strong>${r.wrongCount}</strong></div>
+                <div>📊 المجموع: <strong>${r.total}</strong></div>
+                <div>🎯 النسبة: <strong>${r.percentage}%</strong></div>
+                <div>🏅 التقييم: <strong>${r.evaluation}</strong></div>
+            </div>
+            <h4 style="color:var(--gold-light); margin-bottom:8px; text-align:right;">📝 إجابات الطالب والتدقيق البشري:</h4>
         `;
+
+        if (q.questions && q.questions.length > 0) {
+            detailsHtml += q.questions.map((ques, idx) => {
+                const studentAns = q.studentAnswers ? q.studentAnswers[idx] : null;
+                let studentAnsText = "";
+                let isCorrect = false;
+
+                if (ques.type === "mcq") {
+                    studentAnsText = studentAns !== null && studentAns !== undefined ? ques.options[studentAns] : "لم يُجب";
+                    isCorrect = studentAns === ques.correctIndex;
+                } else {
+                    studentAnsText = studentAns || "لم يُجب";
+                    isCorrect = studentAns && studentAns.trim().toLowerCase() === ques.correctAnswer.trim().toLowerCase();
+                }
+
+                if (q.manualOverrides && q.manualOverrides[idx] === 'correct') isCorrect = true;
+                if (q.manualOverrides && q.manualOverrides[idx] === 'wrong') isCorrect = false;
+
+                return `
+                    <div style="background:var(--input-bg); padding:10px; border-radius:8px; margin-bottom:8px; text-align:right;">
+                        <div><strong>س${idx + 1}:</strong> ${ques.question}</div>
+                        <div style="color:${isCorrect ? '#4ade80' : '#ef4444'}; margin-top:4px;">
+                            إجابة الطالب: <strong>${studentAnsText}</strong> ${isCorrect ? '✓' : '✗'}
+                        </div>
+                        <div style="color:#fbbf24; font-size:0.85rem; margin-top:2px;">
+                            الإجابة النموذجية: ${ques.type === 'mcq' ? ques.options[ques.correctIndex] : ques.correctAnswer}
+                        </div>
+                        ${isDeveloper ? `
+                            <div style="margin-top:6px; display:flex; gap:6px; align-items:center; justify-content:flex-end;">
+                                <label style="font-size:0.8rem; color:#cbd5e1;">تدقيق بشري:</label>
+                                <select onchange="manualOverrideGrade('${q.id}', ${idx}, this.value)" style="padding:4px; border-radius:6px; background:#131c24; color:#fff; border:1px solid var(--border-gold); font-size:0.8rem;">
+                                    <option value="auto" ${!q.manualOverrides?.[idx] ? 'selected' : ''}>حسب النظام</option>
+                                    <option value="correct" ${q.manualOverrides?.[idx] === 'correct' ? 'selected' : ''}>تصحيح كـ (صحيح)</option>
+                                    <option value="wrong" ${q.manualOverrides?.[idx] === 'wrong' ? 'selected' : ''}>تصحيح كـ (خطأ)</option>
+                                </select>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            }).join("");
+        }
+
+        box.innerHTML = detailsHtml;
     }
     document.getElementById("result-modal").classList.remove("hidden");
+};
+
+window.manualOverrideGrade = async (quizId, qIndex, status) => {
+    const q = db.quizzes.find(item => item.id === quizId);
+    if (!q || !q.result) return;
+    
+    if (!q.manualOverrides) q.manualOverrides = {};
+    q.manualOverrides[qIndex] = status;
+
+    let correctCount = 0;
+    q.questions.forEach((ques, idx) => {
+        const studentAns = q.studentAnswers ? q.studentAnswers[idx] : null;
+        let isCorrect = false;
+        if (ques.type === "mcq") {
+            isCorrect = studentAns === ques.correctIndex;
+        } else {
+            isCorrect = studentAns && studentAns.trim().toLowerCase() === ques.correctAnswer.trim().toLowerCase();
+        }
+
+        if (q.manualOverrides[idx] === 'correct') isCorrect = true;
+        if (q.manualOverrides[idx] === 'wrong') isCorrect = false;
+
+        if (isCorrect) correctCount++;
+    });
+
+    q.result.correctCount = correctCount;
+    q.result.wrongCount = q.questions.length - correctCount;
+    q.result.percentage = Math.round((correctCount / q.questions.length) * 100);
+    q.result.evaluation = q.result.percentage >= 90 ? "ممتاز جداً 🌟 (مصحح بشرياً)" : q.result.percentage >= 75 ? "جيد جداً 👍 (مصحح بشرياً)" : q.result.percentage >= 50 ? "مقبول 👌" : "يحتاج مراجعة";
+
+    await saveDatabase();
+    alert("تم تطبيق التدقيق البشري وتحديث النتيجة سحابياً بنجاح!");
 };
 
 document.getElementById("close-result-modal").onclick = () => {
