@@ -856,3 +856,27 @@ body {
     margin-bottom: 14px;
 }
 
+/* زر تواصل مع المطور الأخضر */
+.btn-whatsapp-green {
+    width: 100%;
+    padding: 12px;
+    background: #22c55e;
+    border: none;
+    border-radius: 30px;
+    color: #ffffff;
+    font-size: 1.05rem;
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 10px;
+    transition: background 0.2s;
+}
+
+.btn-whatsapp-green:hover {
+    background: #16a34a;
+}
+
